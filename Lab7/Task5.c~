@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string.h>
+
+void handler(int sig){
+	if (sig == SIGINT)
+		printf("INT blocked");
+	else if (sig == SIGQUIT)
+		printf("QUIT unblocked");
+}
+
+void main(){
+	int i;
+	sigset_t set, old;
+	struct sigaction act;
+	memset (&act, 0, sizeof(act));
+	sigemptyset(&set);
+	sigaddset(&set, SIGINT);
+	sigaddset(&set, SIGQUIT);
+	act.sa_handler = handler;
+	if(sigaction(SIGINT, &act, 0))
+		printf("ACTION FAIL");
+	sigaction(SIGQUIT, &act, 0);
+	if(sigprocmask(SIG_BLOCK, &set, NULL) <0)
+		printf("FAILING");
+	for(i = 1; i<6; i++){
+		printf("%d\n",i);
+		sleep(1);
+	}
+	sigemptyset(&old);
+	sigaddset(&old, SIGQUIT);
+	if(sigprocmask(SIG_UNBLOCK, &old, NULL) < 0)
+		printf("FAILING@");//change mask
+	for(i = 1; i<6; i++){
+		printf("%d\n", i);
+		sleep(1);
+	}
+	exit(0);
+}

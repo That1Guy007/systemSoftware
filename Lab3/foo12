@@ -1,0 +1,32 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int main(){
+char buffer[128];
+int nread = read(0, buffer, 128);
+if (nread == -1)
+	write(2, "read Error", 12);
+if((write(1, buffer, nread))!=nread)
+	write(2, "write Error", 14);
+exit(0);
+}#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <sys/types.h>
+
+int main(int argc, char **argv){
+	int fileDI, fileDO;
+	char txt;
+	umask(0);
+	fileDI = open(argv[1], 0);
+	fileDO = open("clone2", O_WRONLY | O_CREAT, 0770);
+	while(read(fileDI, &txt, 1) ==1 ){
+		write(fileDO, &txt, 1);
+	}
+	close(fileDI);
+	close(fileDO);
+	exit(0);
+}

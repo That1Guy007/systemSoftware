@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+extern char **environ;
+
+char* mygetenv(const char *name){
+	int i=0;
+	int x = 0;
+	int con = 0;
+
+	while (environ[x]!= NULL){
+		i = 0;
+		while(environ[x][i]== name[i]){
+			if(environ[x][i+1] == '='){
+				con = 1;
+				break;
+			}
+			i++;
+		}
+		if(con == 1)
+			break;
+		x++;
+	}
+	return environ[x];
+}
+
+void main(int argc, char** argv){
+	if(argv[1] == NULL){
+		printf("Please pass the ENV variable ud like to see:\n");
+		exit(1);
+	}
+	char* ans  = mygetenv(argv[1]);
+	printf("%s\n", ans);
+	exit(0);
+
+}

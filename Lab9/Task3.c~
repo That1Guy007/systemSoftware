@@ -1,0 +1,40 @@
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+int main(){
+    int data_processed;
+    int file_pipes[2], fd[2];
+    const char some_data[] = "Hey there kiddo";
+    char buffer[BUFSIZ + 1];
+    char buf[BUFSIZ +1];
+    char rBuff[256];
+    pid_t fork_result;
+    memset(buffer, '\0', sizeof(buffer));
+    if (pipe(file_pipes) ==0 && pipe(fd) == 0) {
+        fork_result = fork();
+        if (fork_result == (pid_t)-1) {
+            fprintf(stderr, "Fork failure");
+            exit(EXIT_FAILURE);
+        }
+        if (fork_result == 0) {
+            close(file_pipes[1]);
+            close(fd[0]);
+            sprintf(buffer, "%d", file_pipes[0]);
+            sprintf(buf, "%d", fd[1]);
+            if(execl("twoPipeschild", "twoPipeschild", buffer, buf, (char *)0) < 1)
+                printf("FAILING EXEC");
+            exit(EXIT_FAILURE);
+        }
+        else {
+            close(file_pipes[0]);
+            close(fd[1]);
+            data_processed = write(file_pipes[1], some_data, strlen(some_data));
+            printf("%d -Parent wrote %d bytes\n", getpid(), data_processed);
+            wait();
+            int Data = read(fd[0], rBuff, sizeof(rBuff));
+            printf("%d -Parent read %d bytes: %s\n", getpid(), Data, rBuff);
+        }
+    }
+    exit(EXIT_SUCCESS);
+}

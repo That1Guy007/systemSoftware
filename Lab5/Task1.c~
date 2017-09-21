@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+
+void main(int argc, char ** argv){
+	struct stat buff;
+	if(stat(argv[2], &buff) < 0){
+		printf("Struct stat error");
+		exit(1);
+	}
+	if(S_ISDIR(buff.st_mode)){
+		printf("Moving %s to %s \n", argv[1] , argv[2]);
+		if(link(argv[1],argv[2]) < 0)
+			printf("error\n");
+		unlink(argv[1]);//Unlink
+		exit(0);
+	}
+	else{
+		printf("Moving %s to %s \n", argv[1], argv[2]);
+		if(link(argv[1],argv[2]) < 0)//Link
+			printf("error\n");
+		unlink(argv[1]);//Unlink
+		exit(0);
+	}
+}

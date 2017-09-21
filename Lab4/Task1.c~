@@ -1,0 +1,52 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <ctype.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+
+char* convIntToStr(char * str, int x){//converts int to Cstring
+	sprintf(str, "%d", x);
+	return str;
+}
+
+void append(char* s, char c){ //appends each found number to char array (string)
+	int len = strlen(s);
+	s[len] = c;
+	s[len+1] = '\0';
+}
+
+int convStrtoInt(char * str){ // converts string to integer
+	int result =0;	//this converters string to integer value by converting ascii to integer numbers
+	for(int i = 0; i<strlen(str);i++){ //for loop goes through the Cstring and converts each element into its integer value. 
+		result = result * 10 + (str[i] - '0');	//multiplies the number by ten to move it over
+	}
+	//return (strtol(str,NULL,10));
+	return result;	//returns the argument string into an integer value.
+}
+
+int main(int argc, char ** argv){
+	int fd;
+	char txt;
+	char ans[80];
+	int num;
+	if(argv[1] == NULL){
+		printf("Error did not pass in file\n");
+		exit(1);
+	}
+	fd = open(argv[1], 0);
+	while(read(fd,&txt,1) >0){ //reads 1 char at a time tests that char and then appends or ignore it
+		if(isdigit(txt)){//checks if it is a digit
+			append(ans,txt);//calls the append function
+		}
+	}
+	//printf("%s\n", ans);
+	num = convStrtoInt(ans);
+	//printf("%d\n", num);
+	num = num + 10;
+	//printf("%d\n",num);
+	printf("number is :  %s\n",convIntToStr(ans, num));
+	close(fd);
+	exit(0);
+
+}

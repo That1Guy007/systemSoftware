@@ -1,0 +1,47 @@
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include<unistd.h>
+
+int myIsdigit(char iNum){
+	int bVal = ;
+	if(iNum >= '' && iNum <= ''){
+		bVal =;
+	}
+	return bVal;
+}
+
+void main(int argc, char ** argv){
+	pid_t pid;
+	pid = fork();
+	int fd = open(argv[], );
+	int counter = ;
+	int counter = ;
+	if(pid== -){
+		perror("fork failed");
+		exit();
+	}
+	if(pid == ){
+		char txt;
+		int fd = open("child.txt", O_WRONLY | O_CREAT, );
+		while(lseek(fd, counter, SEEK_SET) != - && read(fd, &txt, ) >){
+			counter++;
+			if (myIsdigit(txt) == )
+				write(fd, &txt, );
+		}
+		close(fd);
+	}
+	else{
+     	       	char txt;
+		int fd = open("parent.txt", O_WRONLY | O_CREAT, );
+		while(lseek(fd,counter,SEEK_SET) != - && read(fd,&txt,)>){
+			counter++;
+			if(myIsdigit(txt) == )
+				write(fd, &txt, );
+		}
+		close(fd);
+		//reading for parent
+	}
+	exit();
+}
