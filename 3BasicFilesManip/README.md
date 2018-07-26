@@ -1,0 +1,1 @@
+.exe and .c files are executable and c source. everything else are output files or test input files.

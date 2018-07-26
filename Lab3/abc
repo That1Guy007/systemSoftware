@@ -1,8 +1,0 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-
-int main(){
-char buffer[128];
-int nread = read(0, buffer, 128);
-if (

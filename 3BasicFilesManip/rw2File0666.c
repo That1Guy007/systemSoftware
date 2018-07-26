@@ -16,5 +16,5 @@ int main(int argc, char **argv){ //accepts command line arguments
         }
         close(fileDI); // close input file
         close(fileDO); //close output file
-        exit(0); exit
+        exit(0); //exit
 }
