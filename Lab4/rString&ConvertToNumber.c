@@ -5,6 +5,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+/*
+Read a file path, read a string and store the number characters
+convert string numbers to int value, add ten then convert back into string
+*/
+
 char* convIntToStr(char * str, int x){//converts int to Cstring
 	sprintf(str, "%d", x);//this takes X which is  of type %d and puts it into the str buffer
 	return str;//returns the char* str

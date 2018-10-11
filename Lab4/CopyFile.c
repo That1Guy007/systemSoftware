@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+//access a file and copy, Tests for existence
 int main(int argc, char ** argv){
 	int fd1, fd2;
 	char txt;
